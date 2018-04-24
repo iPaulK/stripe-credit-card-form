@@ -18,7 +18,6 @@ You need update index.php file and set your secret key
 $ \Stripe\Stripe::setApiKey("YOUR_SECRET_KEY");
 ```
 
-```
 Run Project
 ```sh
 $ php -S localhost:8000 -t public
