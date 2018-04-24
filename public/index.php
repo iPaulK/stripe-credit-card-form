@@ -3,6 +3,11 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $success = $error = '';
+
+$phone = '';
+$cardholderName = '';
+$amount = 0;
+
 if ($_POST) {
     // Set your secret key: remember to change this to your live secret key in production
     // See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -15,9 +20,13 @@ if ($_POST) {
 
         $phone = htmlspecialchars(strip_tags(trim($_POST['phone'])));
         $cardholderName = htmlspecialchars(strip_tags(trim($_POST['cardholder-name'])));
+        
+        $amount = floatval($_POST['amount']);
+        $chargeAmount = $amount * 100; //amount you want to charge, in cents. 1000 = $10.00, 2000 = $20.00 ...
+        $chargeAmount = intval($chargeAmount);
 
         $charge = \Stripe\Charge::create([
-            'amount' => 2500,
+            'amount' => $chargeAmount,
             'currency' => 'usd',
             'description' => 'Example charge',
             'source' => $_POST['stripeToken'],
@@ -28,7 +37,10 @@ if ($_POST) {
         ]);
 
         $chargeID = $charge['id'];
-        $success = sprintf('Successfuly created charge with ID: <a target="_blank" href="https://dashboard.stripe.com/test/payments/%s">%s</a>', $chargeID, $chargeID);
+        //$success = sprintf('Successfuly created charge with ID: <a target="_blank" href="https://dashboard.stripe.com/test/payments/%s">%s</a>', $chargeID, $chargeID);
+        $success = 'Successfuly created charge';
+        $phone = $cardholderName = '';
+        $amount = 0;
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
@@ -43,18 +55,22 @@ if ($_POST) {
     </head>
     <form id="payment-form" method="POST">
         <label>
-            <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
+            <input name="cardholder-name" class="field<?php echo (empty($cardholderName)) ? ' is-empty': ''; ?>" placeholder="Jane Doe" value="<?php echo $cardholderName; ?>"/>
             <span><span>Name</span></span>
         </label>
         <label>
-            <input class="field is-empty" type="tel" name="phone" placeholder="(123) 456-7890" />
+            <input class="field<?php echo (empty($phone)) ? ' is-empty': '';?>" type="tel" name="phone" placeholder="(123) 456-7890" value="<?php echo $phone; ?>"/>
             <span><span>Phone number</span></span>
+        </label>
+        <label>
+            <input name="amount" class="field<?php echo ($amount == 0) ? ' is-empty': '';?>" value="<?php echo $amount; ?>" required/>
+            <span><span>Amount</span></span>
         </label>
         <label>
             <div id="card-element" class="field is-empty"></div>
             <span><span>Credit or debit card</span></span>
         </label>
-        <button type="submit">Pay $25</button>
+        <button type="submit">Pay</button>
         <div class="outcome">
             <div class="error" role="alert"><?php echo $error; ?></div>
             <div class="success"><?php echo $success;?></div>
@@ -142,8 +158,10 @@ if ($_POST) {
 
             document.querySelector('#payment-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                var chargeAmount = 2500; //amount you want to charge, in cents. 1000 = $10.00, 2000 = $20.00 ...
+
                 var form = document.querySelector('#payment-form');
+                var chargeAmount = form.querySelector('input[name="amount"]'); 
+                chargeAmount = chargeAmount * 100; //amount you want to charge, in cents. 1000 = $10.00, 2000 = $20.00 ...
                 form.querySelector('button[type="submit"]').disabled = true;
                 var extraDetails = {
                     name: form.querySelector('input[name=cardholder-name]').value,
