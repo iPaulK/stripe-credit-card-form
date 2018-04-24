@@ -65,6 +65,10 @@ label .field.is-focused + span {
     border-bottom-color: #34D08C;
 }
 
+label .field.is-error + span {
+    border-bottom-color: #E4584C;
+}
+
 .field {
     background: transparent;
     font-weight: 300;

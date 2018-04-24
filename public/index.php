@@ -7,6 +7,24 @@ $success = $error = '';
 $phone = '';
 $cardholderName = '';
 $amount = 0;
+$currency = 'USD';
+$allowedCurrencies = array(
+    // 'AUD',
+    // 'BRL',
+    // 'CAD',
+    // 'CHF',
+    // 'DKK',
+    'EUR',
+    'GBP',
+    // 'HKD',
+    // 'JPY',
+    // 'MXN',
+    // 'NOK',
+    // 'NZD',
+    // 'SEK',
+    // 'SGD',
+    'USD'
+);
 
 if ($_POST) {
     // Set your secret key: remember to change this to your live secret key in production
@@ -20,6 +38,7 @@ if ($_POST) {
 
         $phone = htmlspecialchars(strip_tags(trim($_POST['phone'])));
         $cardholderName = htmlspecialchars(strip_tags(trim($_POST['cardholder-name'])));
+        $currency = $_POST['currency'];
         
         $amount = floatval($_POST['amount']);
         $chargeAmount = $amount * 100; //amount you want to charge, in cents. 1000 = $10.00, 2000 = $20.00 ...
@@ -27,7 +46,7 @@ if ($_POST) {
 
         $charge = \Stripe\Charge::create([
             'amount' => $chargeAmount,
-            'currency' => 'usd',
+            'currency' => $currency,
             'description' => 'Example charge',
             'source' => $_POST['stripeToken'],
             'metadata' => [
@@ -65,6 +84,15 @@ if ($_POST) {
         <label>
             <input name="amount" class="field<?php echo ($amount == 0) ? ' is-empty': '';?>" value="<?php echo $amount; ?>" required/>
             <span><span>Amount</span></span>
+        </label>
+        <label>
+            <select name="currency">
+                <?php foreach ($allowedCurrencies as $item) { ?>
+                    <option value="<?php echo $item; ?>"<?php echo ($item == $currency) ? ' selected' : '';?>>
+                        <?php echo $item; ?>
+                    </option>
+                <?php } ?>
+            </select>
         </label>
         <label>
             <div id="card-element" class="field is-empty"></div>
@@ -160,13 +188,18 @@ if ($_POST) {
                 e.preventDefault();
 
                 var form = document.querySelector('#payment-form');
-                var chargeAmount = form.querySelector('input[name="amount"]'); 
-                chargeAmount = chargeAmount * 100; //amount you want to charge, in cents. 1000 = $10.00, 2000 = $20.00 ...
-                form.querySelector('button[type="submit"]').disabled = true;
-                var extraDetails = {
-                    name: form.querySelector('input[name=cardholder-name]').value,
-                };
-                stripe.createToken(card, chargeAmount, extraDetails).then(setOutcome);
+                var chargeAmount = form.querySelector('input[name="amount"]');
+                
+                if (chargeAmount.value > 0) {
+                    chargeAmount = chargeAmount * 100; //amount you want to charge, in cents. 1000 = $10.00, 2000 = $20.00 ...
+                    form.querySelector('button[type="submit"]').disabled = true;
+                    var extraDetails = {
+                        name: form.querySelector('input[name=cardholder-name]').value,
+                    };
+                    stripe.createToken(card, chargeAmount, extraDetails).then(setOutcome);
+                } else {
+                    chargeAmount.classList.add('is-error');
+                }
             });
         </script>
     </body>
