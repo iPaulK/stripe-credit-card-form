@@ -62,7 +62,7 @@ label .field:not(.is-empty) + span span {
 }
 
 label .field.is-focused + span {
-    border-bottom-color: #34D08C;
+    border-bottom-color: #93c816;
 }
 
 label .field.is-error + span {
@@ -115,10 +115,10 @@ label .field.is-error + span {
     transition: 0.2s ease;
 }
 .display-inline .chosen-single:hover{
-    border-bottom-color: #34D08C !important;
+    border-bottom-color: #93c816 !important;
 }
 .display-inline .chosen-container-active .chosen-single{
-     border-bottom-color: #34D08C !important;
+     border-bottom-color: #93c816 !important;
 }
 .display-inline .chosen-single span{
     color: #fff;
@@ -158,7 +158,7 @@ label .field.is-error + span {
 button {
     float: left;
     display: block;
-    background: #34D08C;
+    background: #93c816;
     color: white;
     border-radius: 2px;
     border: 0;
@@ -205,5 +205,5 @@ button[disabled]{
 }
 
 .success {
-    color: #34D08C;
+    color: #93c816;
 }

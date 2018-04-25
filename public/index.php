@@ -6,8 +6,9 @@ $success = $error = '';
 
 $phone = '';
 $cardholderName = '';
+$description = '';
 $amount = 0;
-$currency = 'USD';
+$currency = 'EUR';
 $allowedCurrencies = array(
     // 'AUD',
     // 'BRL',
@@ -38,6 +39,7 @@ if ($_POST) {
 
         $phone = htmlspecialchars(strip_tags(trim($_POST['phone'])));
         $cardholderName = htmlspecialchars(strip_tags(trim($_POST['cardholder-name'])));
+        $description = htmlspecialchars(strip_tags(trim($_POST['description'])));
         $currency = $_POST['currency'];
         
         $amount = floatval($_POST['amount']);
@@ -47,7 +49,7 @@ if ($_POST) {
         $charge = \Stripe\Charge::create([
             'amount' => $chargeAmount,
             'currency' => $currency,
-            'description' => 'Example charge',
+            'description' => $description,
             'source' => $_POST['stripeToken'],
             'metadata' => [
                 'cardholder-name' => $cardholderName,
@@ -73,7 +75,8 @@ if ($_POST) {
         <link rel="stylesheet" type="text/css" href="chosen/chosen.css">
         <script src="https://js.stripe.com/v3/"></script>
     </head>
-    <form id="payment-form" method="POST"> 
+    <form id="payment-form" method="POST">
+        <img src="img/EBANQ-1green-480.png">
         <label>
             <input name="cardholder-name" class="field<?php echo (empty($cardholderName)) ? ' is-empty': ''; ?>" placeholder="Jane Doe" value="<?php echo $cardholderName; ?>"/>
             <span><span>Name</span></span>
@@ -81,6 +84,10 @@ if ($_POST) {
         <label>
             <input class="field<?php echo (empty($phone)) ? ' is-empty': '';?>" type="tel" name="phone" placeholder="(123) 456-7890" value="<?php echo $phone; ?>"/>
             <span><span>Phone number</span></span>
+        </label>
+        <label>
+            <input name="description" class="field<?php echo ($description == 0) ? ' is-empty': '';?>" value="<?php echo $description; ?>" required/>
+            <span><span>Description</span></span>
         </label>
         <label class="display-inline">
             <input name="amount" class="field<?php echo ($amount == 0) ? ' is-empty': '';?>" value="<?php echo $amount; ?>" required/>
