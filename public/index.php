@@ -70,9 +70,10 @@ if ($_POST) {
 <html lang="en">
     <head>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
+        <link rel="stylesheet" type="text/css" href="chosen/chosen.css">
         <script src="https://js.stripe.com/v3/"></script>
     </head>
-    <form id="payment-form" method="POST">
+    <form id="payment-form" method="POST"> 
         <label>
             <input name="cardholder-name" class="field<?php echo (empty($cardholderName)) ? ' is-empty': ''; ?>" placeholder="Jane Doe" value="<?php echo $cardholderName; ?>"/>
             <span><span>Name</span></span>
@@ -81,12 +82,12 @@ if ($_POST) {
             <input class="field<?php echo (empty($phone)) ? ' is-empty': '';?>" type="tel" name="phone" placeholder="(123) 456-7890" value="<?php echo $phone; ?>"/>
             <span><span>Phone number</span></span>
         </label>
-        <label>
+        <label class="display-inline">
             <input name="amount" class="field<?php echo ($amount == 0) ? ' is-empty': '';?>" value="<?php echo $amount; ?>" required/>
             <span><span>Amount</span></span>
         </label>
-        <label>
-            <select name="currency">
+        <label class="display-inline">
+            <select name="currency" class="chosen-select" tabindex="2">
                 <?php foreach ($allowedCurrencies as $item) { ?>
                     <option value="<?php echo $item; ?>"<?php echo ($item == $currency) ? ' selected' : '';?>>
                         <?php echo $item; ?>
@@ -104,7 +105,11 @@ if ($_POST) {
             <div class="success"><?php echo $success;?></div>
         </div>
     </form>
-
+    <script type="text/javascript" src="chosen/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="chosen/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+        $(".chosen-select").chosen({disable_search_threshold: 10});
+    </script>
     <script type="text/javascript">
             var stripe = Stripe('pk_test_dWca0y9wafteYuXPfhApxxKb');
             var elements = stripe.elements();

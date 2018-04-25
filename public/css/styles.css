@@ -92,7 +92,69 @@ label .field.is-error + span {
 .field.is-empty:not(.is-focused) {
     opacity: 0;
 }
-
+.display-inline{
+    display: inline-block;
+    width: 45%;
+}
+.display-inline + .display-inline{
+    margin-left: 20px;
+}
+.display-inline .chosen-container{
+    width: 100% !important;
+}
+.display-inline .chosen-single{
+    border:none !important;
+    background:none !important;
+    border-radius:0 !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #586A82 !important;
+    padding-bottom: 11px !important;
+    height: auto !important;
+    padding-left:0 !important;
+    font-family: 'Helvetica Neue', Helvetica, sans-serif !important;
+    transition: 0.2s ease;
+}
+.display-inline .chosen-single:hover{
+    border-bottom-color: #34D08C !important;
+}
+.display-inline .chosen-container-active .chosen-single{
+     border-bottom-color: #34D08C !important;
+}
+.display-inline .chosen-single span{
+    color: #fff;
+    font-weight:300;
+    font-size:18px;
+    position: relative;
+    top:4px;
+}
+.display-inline  .chosen-container-single .chosen-single div b {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url(chosen-sprite.png) no-repeat 0px 7px;
+}
+.display-inline .chosen-container-active.chosen-with-drop .chosen-single div b {
+    background-position: -18px 7px;
+}
+.display-inline .chosen-container .chosen-drop{
+    background: #42486D;
+    top:120%;
+    border:1px solid #586A82;
+    border-radius:0;
+}
+.display-inline .chosen-container .chosen-results{
+    color: #8798AB;
+    font-weight:300;
+}
+.display-inline .chosen-container .chosen-results li.highlighted {
+    background-color: #586A82;
+    background-image:none;
+    background-image: none;
+    color: #fff;
+}
+.display-inline .chosen-container .chosen-results{
+    margin-top:5px;
+}
 button {
     float: left;
     display: block;
