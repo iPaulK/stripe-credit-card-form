@@ -59,7 +59,7 @@ if ($_POST) {
 
         $chargeID = $charge['id'];
         //$success = sprintf('Successfuly created charge with ID: <a target="_blank" href="https://dashboard.stripe.com/test/payments/%s">%s</a>', $chargeID, $chargeID);
-        $success = 'Successfuly created charge';
+        $success = 'Thank you for your payment!';
         $phone = $cardholderName = '';
         $amount = 0;
     } catch (Exception $e) {
