@@ -29,5 +29,4 @@ http://localhost:8000/
 ```
 
 ## Preview
-![GitHub Logo](img/preview.png)
-Format: ![credit card payment form](url)
+![](public/img/preview.png)
