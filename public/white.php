@@ -13,7 +13,7 @@ $amount = '';
 if ($_POST) {
     // Set your secret key: remember to change this to your live secret key in production
     // See your keys here: https://dashboard.stripe.com/account/apikeys
-    \Stripe\Stripe::setApiKey(STRIPE_API_KEY);
+    \Stripe\Stripe::setApiKey(STRIPE_SECRET_API_KEY);
 
     try {
         if (!isset($_POST['stripeToken'])) {
@@ -118,7 +118,7 @@ if ($_POST) {
         $(".chosen-select").chosen({disable_search_threshold: 10});
     </script>
     <script type="text/javascript">
-            var stripe = Stripe('pk_test_dWca0y9wafteYuXPfhApxxKb');
+            var stripe = Stripe('<?php echo STRIPE_PUBLIC_API_KEY ?>');
             var elements = stripe.elements();
 
             var card = elements.create('card', {
