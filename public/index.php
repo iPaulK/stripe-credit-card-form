@@ -178,8 +178,15 @@ if ($_POST) {
                 }
             }
 
-            card.on('change', function(event) {
-                setOutcome(event);
+            card.addEventListener('change', function(event) {
+                var successElement = document.querySelector('.success');
+                var errorElement = document.querySelector('.error');
+                if (event.error) {
+                    setOutcome(event);
+                } else {
+                    errorElement.textContent = '';
+                    successElement.textContent = '';
+                }
             });
 
             document.querySelector('#payment-form').addEventListener('submit', function(e) {
