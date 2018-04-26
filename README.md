@@ -29,4 +29,4 @@ http://localhost:8000/
 ```
 
 ## Preview
-![](public/img/preview.png =450x450)
+![](./public/img/preview.png)
