@@ -1,36 +1,19 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../config.local.php';
 
-$success = $error = '';
-
+$error = '';
 $phone = '';
+$success = '';
 $cardholderName = '';
 $description = '';
-$amount = 0;
-$currency = 'EUR';
-$allowedCurrencies = array(
-    // 'AUD',
-    // 'BRL',
-    // 'CAD',
-    // 'CHF',
-    // 'DKK',
-    'EUR',
-    'GBP',
-    // 'HKD',
-    // 'JPY',
-    // 'MXN',
-    // 'NOK',
-    // 'NZD',
-    // 'SEK',
-    // 'SGD',
-    'USD'
-);
+$amount = '';
 
 if ($_POST) {
     // Set your secret key: remember to change this to your live secret key in production
     // See your keys here: https://dashboard.stripe.com/account/apikeys
-    \Stripe\Stripe::setApiKey("rk_test_esg7C3WBxKyG5BjkzxSFO235");
+    \Stripe\Stripe::setApiKey(STRIPE_API_KEY);
 
     try {
         if (!isset($_POST['stripeToken'])) {
@@ -40,7 +23,7 @@ if ($_POST) {
         $phone = htmlspecialchars(strip_tags(trim($_POST['phone'])));
         $cardholderName = htmlspecialchars(strip_tags(trim($_POST['cardholder-name'])));
         $description = htmlspecialchars(strip_tags(trim($_POST['description'])));
-        $currency = $_POST['currency'];
+        //$currency = $_POST['currency'];
         
         $amount = floatval($_POST['amount']);
         $chargeAmount = $amount * 100; //amount you want to charge, in cents. 1000 = $10.00, 2000 = $20.00 ...
@@ -48,7 +31,7 @@ if ($_POST) {
 
         $charge = \Stripe\Charge::create([
             'amount' => $chargeAmount,
-            'currency' => $currency,
+            'currency' => DEFAULT_CURRENCY,
             'description' => $description,
             'source' => $_POST['stripeToken'],
             'metadata' => [
@@ -104,18 +87,21 @@ if ($_POST) {
             <span><span>Description</span></span>
         </label>
         <label class="display-inline">
-            <input name="amount" class="field<?php echo ($amount == 0) ? ' is-empty': '';?>" value="<?php echo $amount; ?>" required/>
+            <input name="amount" class="field<?php echo ($amount == 0) ? ' is-empty': '';?>" value="<?php echo $amount; ?>" placeholder="25" required/>
             <span><span>Amount</span></span>
         </label>
-        <label class="display-inline">
+        <label class="display-inline-15">
+            <?php echo DEFAULT_CURRENCY; ?>
+        </label>
+        <!-- <label class="display-inline">
             <select name="currency" class="chosen-select" tabindex="2">
-                <?php foreach ($allowedCurrencies as $item) { ?>
-                    <option value="<?php echo $item; ?>"<?php echo ($item == $currency) ? ' selected' : '';?>>
+                <?php foreach (array('USD', 'EUR', 'GBR') as $item) { ?>
+                    <option value="<?php echo $item; ?>"<?php echo ($item == DEFAULT_CURRENCY) ? ' selected' : '';?>>
                         <?php echo $item; ?>
                     </option>
                 <?php } ?>
             </select>
-        </label>
+        </label> -->
         <label>
             <div id="card-element" class="field is-empty"></div>
             <span><span>Credit or debit card</span></span>

@@ -96,6 +96,14 @@ label .field.is-error + span {
     display: inline-block;
     width: 45%;
 }
+.display-inline-75{
+    display: inline-block;
+    width: 80%;
+}
+.display-inline-15{
+    display: inline-block;
+    width: 15%;
+}
 .display-inline + .display-inline{
     margin-left: 20px;
 }
