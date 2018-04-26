@@ -22,3 +22,12 @@ Run Project
 ```sh
 $ php -S localhost:8000 -t public
 ```
+
+After this command you can copy this link and check on your browser:
+```sh
+http://localhost:8000/
+```
+
+## Preview
+![GitHub Logo](img/preview.png)
+Format: ![credit card payment form](url)
