@@ -4,15 +4,14 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config.local.php';
 
 $error = '';
-$phone = '';
 $success = '';
+
+$phone = '';
+$amount = '';
 $cardholderName = '';
 $description = '';
-$amount = '';
 
 if ($_POST) {
-    // Set your secret key: remember to change this to your live secret key in production
-    // See your keys here: https://dashboard.stripe.com/account/apikeys
     \Stripe\Stripe::setApiKey(STRIPE_SECRET_API_KEY);
 
     try {
@@ -57,53 +56,69 @@ if ($_POST) {
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <link rel="stylesheet" type="text/css" href="chosen/chosen.css">
         <script src="https://js.stripe.com/v3/"></script>
+        <script type="text/javascript" src="chosen/jquery-3.2.1.min.js"></script>
+        <!-- styles for white background -->
+        <!-- <style type="text/css">
+            body {
+                background: #fff;
+            }
+            .display-inline .chosen-single span{
+                color: #93c816;
+            }
+            .display-inline .chosen-container .chosen-results li.highlighted {
+                color: #93c816;
+            }
+            .field {
+                color: #93c816;
+            }
+        </style> -->
     </head>
-    <form id="payment-form" method="POST">
-        <img src="img/EBANQ-1green-480.png">
-        <label>
-            <input name="cardholder-name" class="field<?php echo (empty($cardholderName)) ? ' is-empty': ''; ?>" placeholder="Jane Doe" value="<?php echo $cardholderName; ?>"/>
-            <span><span>Name</span></span>
-        </label>
-        <label>
-            <input class="field<?php echo (empty($phone)) ? ' is-empty': '';?>" type="tel" name="phone" placeholder="(123) 456-7890" value="<?php echo $phone; ?>"/>
-            <span><span>Phone number</span></span>
-        </label>
-        <label>
-            <input name="description" class="field<?php echo ($description == 0) ? ' is-empty': '';?>" value="<?php echo $description; ?>" placeholder="Description" required/>
-            <span><span>Description</span></span>
-        </label>
-        <label class="display-inline">
-            <input name="amount" class="field<?php echo ($amount == 0) ? ' is-empty': '';?>" value="<?php echo $amount; ?>" placeholder="25" required/>
-            <span><span>Amount</span></span>
-        </label>
-        <label class="display-inline-15">
-            <?php echo DEFAULT_CURRENCY; ?>
-        </label>
-        <!-- <label class="display-inline">
-            <select name="currency" class="chosen-select" tabindex="2">
-                <?php foreach (array('USD', 'EUR', 'GBR') as $item) { ?>
-                    <option value="<?php echo $item; ?>"<?php echo ($item == DEFAULT_CURRENCY) ? ' selected' : '';?>>
-                        <?php echo $item; ?>
-                    </option>
-                <?php } ?>
-            </select>
-        </label> -->
-        <label>
-            <div id="card-element" class="field is-empty"></div>
-            <span><span>Credit or debit card</span></span>
-        </label>
-        <button type="submit">Pay</button>
-        <div class="outcome">
-            <div class="error" role="alert"><?php echo $error; ?></div>
-            <div class="success"><?php echo $success;?></div>
-        </div>
-    </form>
-    <script type="text/javascript" src="chosen/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="chosen/chosen.jquery.min.js"></script>
-    <script type="text/javascript">
-        $(".chosen-select").chosen({disable_search_threshold: 10});
-    </script>
-    <script type="text/javascript">
+    <body>
+        <form id="payment-form" method="POST">
+            <img src="img/EBANQ-1green-480.png">
+            <label>
+                <input name="cardholder-name" class="field<?php echo (empty($cardholderName)) ? ' is-empty': ''; ?>" placeholder="Jane Doe" value="<?php echo $cardholderName; ?>"/>
+                <span><span>Name</span></span>
+            </label>
+            <label>
+                <input class="field<?php echo (empty($phone)) ? ' is-empty': '';?>" type="tel" name="phone" placeholder="(123) 456-7890" value="<?php echo $phone; ?>"/>
+                <span><span>Phone number</span></span>
+            </label>
+            <label>
+                <input name="description" class="field<?php echo ($description == 0) ? ' is-empty': '';?>" value="<?php echo $description; ?>" placeholder="Description" required/>
+                <span><span>Description</span></span>
+            </label>
+            <label class="display-inline">
+                <input name="amount" class="field<?php echo ($amount == 0) ? ' is-empty': '';?>" value="<?php echo $amount; ?>" placeholder="25" required/>
+                <span><span>Amount</span></span>
+            </label>
+            <label class="display-inline-15">
+                <?php echo DEFAULT_CURRENCY; ?>
+            </label>
+            <!-- <label class="display-inline">
+                <select name="currency" class="chosen-select" tabindex="2">
+                    <?php foreach (array('USD', 'EUR', 'GBR') as $item) { ?>
+                        <option value="<?php echo $item; ?>"<?php echo ($item == DEFAULT_CURRENCY) ? ' selected' : '';?>>
+                            <?php echo $item; ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </label> -->
+            <label>
+                <div id="card-element" class="field is-empty"></div>
+                <span><span>Credit or debit card</span></span>
+            </label>
+            <button type="submit">Pay</button>
+            <div class="outcome">
+                <div class="error" role="alert"><?php echo $error; ?></div>
+                <div class="success"><?php echo $success;?></div>
+            </div>
+        </form>
+        <script type="text/javascript" src="chosen/chosen.jquery.min.js"></script>
+        <script type="text/javascript">
+            $(".chosen-select").chosen({disable_search_threshold: 10});
+        </script>
+        <script type="text/javascript">
             var stripe = Stripe('<?php echo STRIPE_PUBLIC_API_KEY ?>');
             var elements = stripe.elements();
 
@@ -131,6 +146,30 @@ if ($_POST) {
                     focus: 'is-focused',
                     empty: 'is-empty',
                 },
+
+                // styles for white background
+                // style: {
+                //     base: {
+                //     iconColor: '#8898AA',
+                //     color: '#93c816',
+                //     lineHeight: '36px',
+                //     fontWeight: 300,
+                //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                //     fontSize: '19px',
+
+                //     '::placeholder': {
+                //         color: '#8898AA',
+                //     },
+                //     },
+                //     invalid: {
+                //         iconColor: '#e85746',
+                //         color: '#e85746',
+                //     }
+                // },
+                // classes: {
+                //     focus: 'is-focused',
+                //     empty: 'is-empty',
+                // },
             });
             card.mount('#card-element');
 

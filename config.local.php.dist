@@ -1,5 +1,6 @@
 <?php
-
+// Set your public and secret keys: remember to change this to your live keys in production
+// See your keys here: https://dashboard.stripe.com/account/apikeys
 define('STRIPE_PUBLIC_API_KEY', 'YOUR_STRIPE_PUBLIC_API_KEY');
 define('STRIPE_SECRET_API_KEY', 'YOUR_STRIPE_SECRET_API_KEY');
 define('DEFAULT_CURRENCY', 'EUR');

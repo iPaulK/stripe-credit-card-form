@@ -13,9 +13,15 @@ $ cd path/to/install
 $ composer update
 ```
 
-You need update index.php file and set your secret key
+Create and configure local config 
+```sh
+$ cp config.local.php.dist config.local.php
+```
+
+Update config.local.php file and set your public and secret key
 ```php
-$ \Stripe\Stripe::setApiKey("YOUR_SECRET_KEY");
+define('STRIPE_PUBLIC_API_KEY', 'YOUR_STRIPE_PUBLIC_API_KEY');
+define('STRIPE_SECRET_API_KEY', 'YOUR_STRIPE_SECRET_API_KEY');
 ```
 
 Run Project
